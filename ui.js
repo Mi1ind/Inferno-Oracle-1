@@ -1,6 +1,7 @@
 import { CreateNeuralNetwork, train } from '.'
 const status_bar = document.getElementById("status_bar");
 const training_bar = document.getElementById("training_bar");
+const regeneratorRuntime = require("regenerator-runtime");
 
 
 

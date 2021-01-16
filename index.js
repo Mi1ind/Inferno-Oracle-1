@@ -3,6 +3,8 @@ import * as tfvis from '@tensorflow/tfjs-vis';
 import { ForestDataset, FEATURE_NAMES } from './data';
 import { normalizeData } from './utils'
 import * as ui from './ui';
+import regeneratorRuntime from "regenerator-runtime";
+
 
 const forestdata = new ForestDataset();
 const tensors = {}
