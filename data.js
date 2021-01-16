@@ -4,7 +4,7 @@ const TRAIN_DATA = "forestfire_train.csv";
 const TEST_DATA = "forestfire_test.csv";
 const TRAIN_TARGET = "forestfire_train_target.csv";
 const TEST_TARGET = "forestfire_test_target.csv";
-export const FEATURE_NAMES = ['X','Y','month','day','FFMC','DMC','DC','ISI','temp','RH','wind','rain']
+export const FEATURE_NAMES = ['X','Y','month','day','temp','RH','wind','rain']
 const regeneratorRuntime = require("regenerator-runtime");
 
 
