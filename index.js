@@ -70,6 +70,9 @@ export async function train(model){
                 //plot the training chart
                 tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss'])                
             },
+            onBatchEnd: async (batch, logs) => {
+                console.log("Accuracy: ", logs.accuracy);
+            }
         }
     });
 
