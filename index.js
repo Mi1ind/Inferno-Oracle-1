@@ -10,7 +10,7 @@ const forestdata = new ForestDataset();
 const tensors = {}
 
 const LEARNING_RATE = 0.05
-const EPOCHS = 100
+const EPOCHS = 20
 const BATCH_SIZE = 50
 
 /**
@@ -95,6 +95,9 @@ export async function train(model){
 
     await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 
+    // Predict 3 random samples.
+    const prediction = model.predict(tf.randomNormal([3, 784]));
+    prediction.print();
 };
 
 //Download and convert data to tensor as soon as the page is loaded

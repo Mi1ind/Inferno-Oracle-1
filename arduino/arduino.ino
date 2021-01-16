@@ -8,6 +8,7 @@ dht DHT;
 #define DHT11_PIN 7
 
 void setup(){
+  Serial.begin(9600);
   lcd.begin(16, 2);
 }
 
@@ -22,5 +23,8 @@ void loop(){
   lcd.print("Humidity: ");
   lcd.print(DHT.humidity);
   lcd.print("%");
+
+  Serial.print(DHT.temperature);
+  Serial.print(DHT.humidity);
   delay(10000);
 }
