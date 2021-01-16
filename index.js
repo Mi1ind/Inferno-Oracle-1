@@ -59,7 +59,7 @@ export async function train(model){
     });
 
     ui.updateStatus("Training started....")
-   let m = await model.fit(tensors.Xtrain_tf, tensors.ytrain_tf,{
+    await model.fit(tensors.Xtrain_tf, tensors.ytrain_tf,{
         batchSize: BATCH_SIZE,
         epochs: EPOCHS,
         validationSplit: 0.2,
@@ -77,12 +77,13 @@ export async function train(model){
     const result = model.evaluate(tensors.Xtest_tf, tensors.ytest_tf);
 
     console.log("Accuracy: ", result[1].dataSync()[0] * 100, "%");
+    const m_accuracy = result[1].dataSync()[0] * 100;
 
     const test_loss = result[0].dataSync()[0];
     const train_loss = trainingLogs[trainingLogs.length - 1].loss;
     const val_loss = trainingLogs[trainingLogs.length - 1].val_loss;
 
-    await ui.updateTrainingStatus(train_loss, val_loss, test_loss)
+    await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 
 };
 

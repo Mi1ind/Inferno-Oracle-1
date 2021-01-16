@@ -15,10 +15,11 @@ export function updateFinalResult(curr_epoch, EPOCHs) {
 }
 
 
-export function updateTrainingStatus(train_loss, val_loss, test_loss) {
+export function updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy) {
     let msg = `<p>Final Training Loss: ${train_loss.toFixed(4)}</p>
                 <p>Final Validation Loss: ${val_loss.toFixed(4)}</p><hr>
-                <p>Final Test Loss: ${test_loss? test_loss.toFixed(4): '...'}</p>` //check if loss is undefined
+                <p>Final Test Loss: ${test_loss? test_loss.toFixed(4): '...'}</p>
+                <p>Accuracy: ${m_accuracy? m_accuracy.toFixed(2): '...'} % </p>` //check if loss is undefined
     training_bar.innerHTML = msg
 }
 
