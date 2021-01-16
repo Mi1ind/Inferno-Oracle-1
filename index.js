@@ -70,14 +70,13 @@ export async function train(model){
                 //plot the training chart
                 tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss'])                
             },
-            onBatchEnd: async (batch, logs) => {
-                console.log("Accuracy: ", logs.accuracy);
-            }
         }
     });
 
     ui.updateStatus("Evaluating model on test data")
     const result = model.evaluate(tensors.Xtest_tf, tensors.ytest_tf);
+
+    console.log("Accuracy: ", result[1].dataSync()[0] * 100, "%");
 
     const test_loss = result[0].dataSync()[0];
     const train_loss = trainingLogs[trainingLogs.length - 1].loss;
