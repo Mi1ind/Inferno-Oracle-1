@@ -9,8 +9,8 @@ import regeneratorRuntime from "regenerator-runtime";
 const forestdata = new ForestDataset();
 const tensors = {}
 
-const LEARNING_RATE = 0.01
-const EPOCHS = 100
+const LEARNING_RATE = 0.05
+const EPOCHS = 10
 const BATCH_SIZE = 32
 
 /**
@@ -40,6 +40,10 @@ export function CreateNeuralNetwork(){
     return model;
 }
 
+function onBatchEnd(batch, logs) {
+    console.log("Accuracy", logs.acc);
+}
+
 
 /**
  * Trains the neural Network and prints the result
@@ -47,13 +51,15 @@ export function CreateNeuralNetwork(){
 export async function train(model){
     let trainingLogs = [];
     let chartbox = document.getElementById('chart')
+
     model.compile({
         optimizer: tf.train.sgd(LEARNING_RATE),
-        loss: 'meanSquaredError'
+        loss: 'meanSquaredError',
+        metrics: ['accuracy'],
     });
 
     ui.updateStatus("Training started....")
-    await model.fit(tensors.Xtrain_tf, tensors.ytrain_tf,{
+   let m = await model.fit(tensors.Xtrain_tf, tensors.ytrain_tf,{
         batchSize: BATCH_SIZE,
         epochs: EPOCHS,
         validationSplit: 0.2,
@@ -62,16 +68,15 @@ export async function train(model){
                 await ui.updateTrainingStatus(curr_epoch, EPOCHS)
                 trainingLogs.push(logs);
                 //plot the training chart
-                tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss'])
-
-            }
+                tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss'])                
+            },
         }
     });
+
     ui.updateStatus("Evaluating model on test data")
-    const result = model.evaluate(tensors.Xtest_tf, tensors.ytest_tf, {
-        batchSize: BATCH_SIZE,
-    });
-    const test_loss = result.dataSync()[0];
+    const result = model.evaluate(tensors.Xtest_tf, tensors.ytest_tf);
+
+    const test_loss = result[0].dataSync()[0];
     const train_loss = trainingLogs[trainingLogs.length - 1].loss;
     const val_loss = trainingLogs[trainingLogs.length - 1].val_loss;
 
@@ -90,6 +95,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     arrayToTensor();
     ui.updateStatus("Data Loaded Successfully....")
     document.getElementById('trainModel').style.display = 'block'
-    // tf.print(tensors.Xtrain_tf)
+    tf.print(tensors.Xtrain_tf)
     await ui.setUp()
 }, false);
