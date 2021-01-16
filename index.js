@@ -10,8 +10,8 @@ const forestdata = new ForestDataset();
 const tensors = {}
 
 const LEARNING_RATE = 0.05
-const EPOCHS = 10
-const BATCH_SIZE = 32
+const EPOCHS = 100
+const BATCH_SIZE = 50
 
 /**
  * Convert Array of Arrays to Tensors, and normalize the features
@@ -28,13 +28,21 @@ export function CreateNeuralNetwork(){
     const model = tf.sequential();
     model.add(tf.layers.dense({
         inputShape: [forestdata.dataShape],
-        units: 20,
-        activation: 'relu',
-        kernelInitializer: 'leCunNormal'
+        units: 100,
+        activation: "softmax",
+        kernelInitializer: 'leCunUniform',
     }));
     model.add(tf.layers.dense({
-        units: 10, activation:'relu', kernelInitializer: 'leCunNormal'}));
-    model.add(tf.layers.dense({units: 1}))
+        units: 80, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
+        model.add(tf.layers.dense({
+            units: 60, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
+            model.add(tf.layers.dense({
+                units: 40, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
+                model.add(tf.layers.dense({
+                    units: 20, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
+    model.add(tf.layers.dense({
+        units: 10, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
+    model.add(tf.layers.dense({units: 1}));
 
     model.summary();
     return model;
@@ -53,9 +61,9 @@ export async function train(model){
     let chartbox = document.getElementById('chart')
 
     model.compile({
-        optimizer: tf.train.sgd(LEARNING_RATE),
-        loss: 'meanSquaredError',
-        metrics: ['accuracy'],
+        optimizer: tf.train.adam(LEARNING_RATE),
+        loss: 'binaryCrossentropy',
+        metrics: ['accuracy', 'mse'],
     });
 
     ui.updateStatus("Training started....")
@@ -68,9 +76,11 @@ export async function train(model){
                 await ui.updateTrainingStatus(curr_epoch, EPOCHS)
                 trainingLogs.push(logs);
                 //plot the training chart
-                tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss'])                
+                tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss', 'acc'])                
             },
         }
+    }).then(info => {
+        console.log("Accuracy dot then: ", info.history.acc);
     });
 
     ui.updateStatus("Evaluating model on test data")
@@ -87,10 +97,6 @@ export async function train(model){
 
 };
 
-
-
-
-
 //Download and convert data to tensor as soon as the page is loaded
 document.addEventListener('DOMContentLoaded', async () => {
     ui.updateStatus("Loading Data set and Converting to Tensors....")
@@ -98,6 +104,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     arrayToTensor();
     ui.updateStatus("Data Loaded Successfully....")
     document.getElementById('trainModel').style.display = 'block'
-    tf.print(tensors.Xtrain_tf)
+    //tf.print(tensors.Xtrain_tf)
     await ui.setUp()
 }, false);
