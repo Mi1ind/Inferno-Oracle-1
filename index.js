@@ -112,7 +112,7 @@ export async function train(model){
     await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 };
 
-export function prediction(model, data) {
+export async function prediction(model, data) {
         let predData = normalizeData(tf.tensor2d(data));  
         console.log("pred Tensor: ", predData);
         const pred = model.predict(predData);
