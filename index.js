@@ -173,28 +173,23 @@ export function CreateNeuralNetwork(){
 
         model.add(tf.layers.dense({
         inputShape: [forestdata.dataShape],
-        units: 32,
+        units: 16,
         activation: 'relu',
         kernelInitializer: "leCunNormal",
     }));
-    // model.add(tf.layers.dense({
-    //     units: 16,
-    //     activation: "relu",
-    // }));
+    model.add(tf.layers.dense({
+        units: 16,
+        activation: "relu",
+    }));
     model.add(tf.layers.dense({
         units: 1,
-        activation: 'linear',
+        activation: 'sigmoid',
         kernelInitializer: "leCunNormal"
     }));
 
     model.summary();
-
-    // const surface = { name: 'Model Summary', tab: 'Model Inspection'};
-    // tfvis.show.modelSummary(surface, model);
     return model;
 }
-
-
 
 /**
  * Trains the neural Network and prints the result
@@ -206,7 +201,7 @@ export async function train(model){
     model.compile({
         // optimizer: tf.train.adam(LEARNING_RATE),
         optimizer: tf.train.adam(LEARNING_RATE),
-        loss: 'meanSquaredError',
+        loss: 'binaryCrossentropy',
         metrics: ['accuracy'],
     });
 
