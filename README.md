@@ -1,4 +1,4 @@
-# Inferno-Oracle-1
+# Inferno Oracle
 ## Inspiration
 
 Since the start of 2019, there have been numerous issues with controlling wildfires, many notable examples being the California wildfires, Australian wildfires, and Amazon forest fires. These fires are started by both natural phenomena and human activity, the breakdown being 47% by lightning strikes, 49% by human activity, and 4% by other means. We wanted to create a project that helps with not only mitigating wildfires, but also preventing them, which can help save millions in financial resources, and reduce the impact of wildfires to those who live nearby as well as the rest of the world. The current approach that many fire watch organizations take is mainly focused on mitigation of damage, and is primarily done with the use of satellite imaging.
