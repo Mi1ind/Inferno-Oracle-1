@@ -10,7 +10,7 @@
 
     <title>Inferno Oracle 1</title>
 </head>
-
+<!-- TFJS & TFVIS -->
 <body>
     <div class="container">
         <div class="row">
@@ -18,7 +18,7 @@
                 <h2 style="padding: 100px;">Forest Fire Prediction Using a Neural Network and an Arduino</h2>
             </div>
         </div>
-        <div class="row" style="margin-top: 50px;">
+        <div class="row" style="margin-top: 50px; margin-bottom: 50px;">
             <div class="col-md-5">
                 <h3 id="status_bar"></h3>
                 <h3 id="training_bar"></h3>
@@ -28,10 +28,169 @@
             <div id="chart" class=" col-md-7 text-center"></div>
         </div>
     </div>
+<!-- Maps -->
+    <head>
+        <meta charset="utf-8" />
+        <title>Create a heatmap layer</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css" rel="stylesheet" />
+        <style>
+            /* body { margin: 25; padding: 50; } */
+            #map { width: 800px; height: 600px;}
+        </style>
+        </head>
+            <div id="map"></div>
+                
+            <script>
+                // TO MAKE THE MAP APPEAR YOU MUST
+                // ADD YOUR ACCESS TOKEN FROM
+                // https://account.mapbox.com
+                mapboxgl.accessToken = 'pk.eyJ1IjoibWkxaW5kIiwiYSI6ImNrNmgweTVkajJwOHozZG9ib3NiNDN2bHkifQ.nZQZ64UId3gMsFNavPiQ_A';
+            var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v10',
+            center: [-118.658,53.983],
+            zoom: 5
+            });
+                
+            map.on('load', function () {
+            // Add a geojson point source.
+            // Heatmap layers also work with a vector tile source.
+            map.addSource('MODIS_CAN_Fires', {
+            'type': 'geojson',
+            'data': 'MODIS_CAN_Fires.geojson'
+            });
+                
+            map.addLayer(
+            {
+            'id': 'fire-heat',
+            'type': 'heatmap',
+            'source': 'MODIS_CAN_Fires',
+            'maxzoom': 9,
+            'paint': {
+            // Increase the heatmap weight based on frp
+            'heatmap-weight': [
+            'interpolate',
+            ['linear'],
+            ['get', 'frp'],
+            0,
+            0,
+            6,
+            1
+            ],
+            // Increase the heatmap color weight weight by zoom level
+            // heatmap-intensity is a multiplier on top of heatmap-weight
+            'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            1,
+            9,
+            3
+            ],
+            // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+            // Begin color ramp at 0-stop with a 0-transparancy color
+            // to create a blur-like effect.
+            'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            'rgba(33,102,172,0)',
+            0.2,
+            'rgb(103,169,207)',
+            0.4,
+            'rgb(209,229,240)',
+            0.6,
+            'rgb(253,219,199)',
+            0.8,
+            'rgb(239,138,98)',
+            1,
+            'rgb(178,24,43)'
+            ],
+            // Adjust the heatmap radius by zoom level
+            'heatmap-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0,
+            2,
+            9,
+            20
+            ],
+            // Transition from heatmap to circle layer by zoom level
+            'heatmap-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7,
+            1,
+            9,
+            0
+            ]
+            }
+            },
+            'waterway-label'
+            );
+                
+            map.addLayer(
+            {
+            'id': 'fires-point',
+            'type': 'circle',
+            'source': 'MODIS_CAN_Fires',
+            'minzoom': 7,
+            'paint': {
+            // Size circle radius by frp magnitude and zoom level
+            'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7,
+            ['interpolate', ['linear'], ['get', 'frp'], 1, 1, 6, 4],
+            16,
+            ['interpolate', ['linear'], ['get', 'frp'], 1, 5, 6, 50]
+            ],
+            // Color circle by frp magnitude
+            'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'frp'],
+            1,
+            'rgba(33,102,172,0)',
+            2,
+            'rgb(103,169,207)',
+            3,
+            'rgb(209,229,240)',
+            4,
+            'rgb(253,219,199)',
+            5,
+            'rgb(239,138,98)',
+            6,
+            'rgb(178,24,43)'
+            ],
+            'circle-stroke-color': 'white',
+            'circle-stroke-width': 1,
+            // Transition from heatmap to circle layer by zoom level
+            'circle-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7,
+            0,
+            8,
+            1
+            ]
+            }
+            },
+            'waterway-label'
+            );
+            });
+            </script>
 
 
     <script src="index.js"></script>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
