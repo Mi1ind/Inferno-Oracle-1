@@ -1,9 +1,9 @@
 const PAPA = require('papaparse');
 const BASE_PATH = "https://raw.githubusercontent.com/Mi1ind/Inferno-Oracle-1/master/";
-const TRAIN_DATA = "data/forestfires-train-OG.csv";
-const TEST_DATA = "data/forestfires-test-OG.csv";
-const TRAIN_TARGET = "data/forestfires-train-target-OG.csv";
-const TEST_TARGET = "data/forestfires-test-target-OG.csv";
+const TRAIN_DATA = "fires/forestfire_train.csv";
+const TEST_DATA = "fires/forestfire_test.csv";
+const TRAIN_TARGET = "fires/forestfire_train_target.csv";
+const TEST_TARGET = "fires/forestfire_test_target.csv";
 export const FEATURE_NAMES = ['X','Y','month','day','temp','RH','wind','rain']
 const regeneratorRuntime = require("regenerator-runtime");
 
@@ -61,6 +61,5 @@ export const read_csv = async (csv_file) => {
          this.Xtest = await read_csv(TEST_DATA)
          this.ytrain = await read_csv(TRAIN_TARGET)
          this.ytest = await read_csv(TEST_TARGET)
-
      }
  }

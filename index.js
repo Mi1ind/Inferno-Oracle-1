@@ -11,42 +11,25 @@ const forestdata = new ForestDataset();
 const tensors = {}
 
 const LEARNING_RATE = 0.01
-const EPOCHS = 10
-const BATCH_SIZE = 50
+const EPOCHS = 50
+const BATCH_SIZE = 32
 
 /**
  * Convert Array of Arrays to Tensors, and normalize the features
  */
 export function arrayToTensor() {
-    console.log(tf.tensor2d(forestdata.Xtrain).shape);
-    console.log(tf.tensor2d(forestdata.ytrain).shape);
-    console.log(tf.tensor2d(forestdata.Xtest).shape);
-    console.log(tf.tensor2d(forestdata.ytest).shape);
-
-    // forestdata.ytrain.pop();
-    // forestdata.Xtrain.pop();
-    // forestdata.ytest.pop();
-    // forestdata.Xtest.pop();
-
-    tensors['Xtrain_tf'] = normalizeData(tf.tensor2d(forestdata.Xtrain))
-    tensors['Xtest_tf'] = normalizeData(tf.tensor2d(forestdata.Xtest))
-    tensors['ytrain_tf'] = normalizeData(tf.tensor2d(forestdata.ytrain))
-    tensors['ytest_tf'] = normalizeData(tf.tensor2d(forestdata.ytest))
-
-    console.log(forestdata.Xtrain);
-    console.log(forestdata.ytrain);
-    console.log(forestdata.Xtest);
-    console.log(forestdata.ytest);
-
+    tensors['Xtrain_tf'] = normalizeData(tf.tensor2d(forestdata.Xtrain));
+    tensors['Xtest_tf'] = normalizeData(tf.tensor2d(forestdata.Xtest));
+    tensors['ytrain_tf'] = normalizeData(tf.tensor2d(forestdata.ytrain));
+    tensors['ytest_tf'] = normalizeData(tf.tensor2d(forestdata.ytest));
 }
 
 export function CreateNeuralNetwork(){
     const model = tf.sequential();
     model.add(tf.layers.dense({
         inputShape: [forestdata.dataShape],
-        units: 16,
+        units: 32,
         activation: 'relu',
-        kernelInitializer: "leCunNormal",
     }));
     model.add(tf.layers.dense({
         units: 16,
@@ -55,7 +38,6 @@ export function CreateNeuralNetwork(){
     model.add(tf.layers.dense({
         units: 1,
         activation: 'sigmoid',
-        kernelInitializer: "leCunNormal"
     }));
 
     model.summary();
@@ -70,7 +52,6 @@ export async function train(model){
     let chartbox = document.getElementById('chart')
 
     model.compile({
-        // optimizer: tf.train.adam(LEARNING_RATE),
         optimizer: tf.train.adam(LEARNING_RATE),
         loss: 'binaryCrossentropy',
         metrics: ['accuracy'],
@@ -87,8 +68,8 @@ export async function train(model){
                 await ui.updateTrainingStatus(curr_epoch, EPOCHS)
                 trainingLogs.push(logs);
                 //plot the training chart
-                tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss', 'acc']);         
-            },
+                tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss', 'acc'])       
+            }
         }
     });
 
@@ -97,27 +78,19 @@ export async function train(model){
         batchSize: BATCH_SIZE,
     });
 
-    console.log("Result", result[0]);
-    console.log("Accuracy: ", result[1].dataSync()[0] * 100, "%");
-
     const m_accuracy = result[1].dataSync()[0] * 100;
     const test_loss = result[0].dataSync()[0];
     const train_loss = trainingLogs[trainingLogs.length - 1].loss;
     const val_loss = trainingLogs[trainingLogs.length - 1].val_loss;
-    // const val_loss = result[0].dataSync()[1];
-    console.log("val loss", val_loss);
-
-    console.log(trainingLogs);
-    console.log("test loss: ", test_loss);
     await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 };
 
 export async function prediction(model, data) {
         let predData = normalizeData(tf.tensor2d(data));  
-        console.log("pred Tensor: ", predData);
-        const pred = model.predict(predData);
+        const pred = model.predict(predData, {
+            batchSize: 2
+        });
         pred.print();
-    
 }
 
 //Download and convert data to tensor as soon as the page is loaded
@@ -127,6 +100,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     arrayToTensor();
     ui.updateStatus("Data Loaded Successfully....")
     document.getElementById('trainModel').style.display = 'block'
-    //tf.print(tensors.Xtrain_tf)
     await ui.setUp()
 }, false);
