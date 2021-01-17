@@ -24,7 +24,8 @@ void loop(){
   lcd.print(DHT.humidity);
   lcd.print("%");
 
-  Serial.print(DHT.temperature);
-  Serial.print(DHT.humidity);
-  delay(10000);
+  Serial.println(DHT.temperature);
+  Serial.println(DHT.humidity);
+
+  delay(5000);
 }
