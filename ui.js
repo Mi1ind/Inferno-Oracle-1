@@ -28,7 +28,6 @@ export function updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy
 
 export async function setUp() {
     const trainModel = document.getElementById('trainModel')
-    const predictModel = document.getElementById('predictModel')
     let model;
 
     trainModel.addEventListener('click', async () => {
@@ -36,8 +35,6 @@ export async function setUp() {
         await train(model);
         
         let predData = await read_csv(ARDUINO_DATA);
-        predData.pop();
-        console.log("predData: ", predData);
         prediction(model, predData);
     }, false);
 }
