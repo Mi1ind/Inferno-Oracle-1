@@ -1,4 +1,4 @@
-X,Y,month,day,FFMC,DMC,DC,ISI,temp,RH,wind,rain,area,fire,Rand Form,
+X,Y,month,day,FFMC,DMC,DC,ISI,temp,RH,wind,rain,area,fire,Random Form,
 9,4,jul,mon,92.3,92.1,442.1,9.8,22.8,27,4.5,0,1.63,0,0.585166105,
 6,5,mar,mon,90.1,39.7,86.6,6.2,15.2,27,3.1,0,31.86,0,0.022985141,
 8,6,oct,mon,84.9,32.8,664.2,3,19.1,32,4,0,5.44,0,0.877522516,
