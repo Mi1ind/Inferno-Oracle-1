@@ -17,6 +17,8 @@ const BATCH_SIZE = 50
  * Convert Array of Arrays to Tensors, and normalize the features
  */
 export function arrayToTensor() {
+    console.log(tf.tensor2d(forestdata.Xtrain).shape);
+    console.log(tf.tensor2d(forestdata.ytrain).shape);
     console.log(tf.tensor2d(forestdata.Xtest).shape);
     console.log(tf.tensor2d(forestdata.ytest).shape);
     tensors['Xtrain_tf'] = normalizeData(tf.tensor2d(forestdata.Xtrain))
@@ -30,14 +32,14 @@ export function CreateNeuralNetwork(){
     const model = tf.sequential();
     model.add(tf.layers.dense({
         inputShape: [forestdata.dataShape],
-        units: 1,
-        // activation: 'relu'
+        units: 8,
+        activation: 'softmax'
         // kernelInitializer: "leCunNormal"
     }));
     // model.add(tf.layers.dense({
     //     units: 10, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-    // model.add(tf.layers.dense({units: 20, activation: 'softmax'}));
-    // model.add(tf.layers.dense({units: 1, activation: 'linear'}));
+    // model.add(tf.layers.dense({units: 10}));
+    model.add(tf.layers.dense({units: 1}));
 
     model.summary();
     return model;
