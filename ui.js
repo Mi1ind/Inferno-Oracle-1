@@ -35,9 +35,9 @@ export async function setUp() {
         model = CreateNeuralNetwork();
         await train(model);
         
-        // let predData = await read_csv(ARDUINO_DATA);
-        // predData.pop();
-        // console.log("predData: ", predData);
-        // prediction(model, predData);
+        let predData = await read_csv(ARDUINO_DATA);
+        predData.pop();
+        console.log("predData: ", predData);
+        prediction(model, predData);
     }, false);
 }

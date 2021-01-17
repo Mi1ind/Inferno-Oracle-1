@@ -23,10 +23,10 @@ export function arrayToTensor() {
     console.log(tf.tensor2d(forestdata.Xtest).shape);
     console.log(tf.tensor2d(forestdata.ytest).shape);
 
-    forestdata.ytrain.pop();
-    forestdata.Xtrain.pop();
-    forestdata.ytest.pop();
-    forestdata.Xtest.pop();
+    // forestdata.ytrain.pop();
+    // forestdata.Xtrain.pop();
+    // forestdata.ytest.pop();
+    // forestdata.Xtest.pop();
 
     tensors['Xtrain_tf'] = normalizeData(tf.tensor2d(forestdata.Xtrain));
     tensors['Xtest_tf'] = normalizeData(tf.tensor2d(forestdata.Xtest));
@@ -45,15 +45,15 @@ export function CreateNeuralNetwork(){
     model.add(tf.layers.dense({
         inputShape: [forestdata.dataShape],
         units: 32,
-        // activation: 'relu',
+        activation: 'relu',
     }));
-    // model.add(tf.layers.dense({
-    //     units: 16,
-    //     activation: "relu",
-    // }));
+    model.add(tf.layers.dense({
+        units: 16,
+        activation: "relu",
+    }));
     model.add(tf.layers.dense({
         units: 1,
-        // activation: 'sigmoid',
+        activation: 'sigmoid',
     }));
 
     model.summary();
@@ -69,8 +69,8 @@ export async function train(model){
 
     model.compile({
         // optimizer: tf.train.adam(LEARNING_RATE),
-        optimizer: tf.train.sgd(LEARNING_RATE),
-        loss: 'meanSquaredError',
+        optimizer: tf.train.adam(LEARNING_RATE),
+        loss: 'binaryCrossentropy',
         metrics: ['accuracy'],
     });
 
