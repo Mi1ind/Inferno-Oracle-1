@@ -9,7 +9,7 @@ import regeneratorRuntime from "regenerator-runtime";
 const forestdata = new ForestDataset();
 const tensors = {}
 
-const LEARNING_RATE = 0.05
+const LEARNING_RATE = 0.01
 const EPOCHS = 20
 const BATCH_SIZE = 50
 
