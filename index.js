@@ -160,18 +160,35 @@ export function arrayToTensor() {
 
 export function CreateNeuralNetwork(){
     const model = tf.sequential();
-    model.add(tf.layers.dense({
-        inputShape: [forestdata.dataShape],
-        units: 8,
-        activation: 'softmax'
-        // kernelInitializer: "leCunNormal"
-    }));
     // model.add(tf.layers.dense({
-    //     units: 10, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-    // model.add(tf.layers.dense({units: 10}));
-    model.add(tf.layers.dense({units: 1}));
+    //     inputShape: [forestdata.dataShape],
+    //     units: 8,
+    //     activation: 'softmax'
+    //     // kernelInitializer: "leCunNormal"
+    // }));
+    // // model.add(tf.layers.dense({
+    // //     units: 10, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
+    // // model.add(tf.layers.dense({units: 10}));
+    // model.add(tf.layers.dense({units: 1}));
+
+        model.add(tf.layers.dense({
+        inputShape: [forestdata.dataShape],
+        units: 32,
+        activation: "relu",
+    }));
+    model.add(tf.layers.dense({
+        units: 16,
+        activation: "relu",
+    }));
+    model.add(tf.layers.dense({
+        units: 1,
+        activation: "linear",
+    }));
 
     model.summary();
+
+    // const surface = { name: 'Model Summary', tab: 'Model Inspection'};
+    // tfvis.show.modelSummary(surface, model);
     return model;
 }
 
@@ -188,24 +205,28 @@ export async function train(model){
     let chartbox = document.getElementById('chart')
 
     model.compile({
-        optimizer: tf.train.adam(LEARNING_RATE),
+        // optimizer: tf.train.adam(LEARNING_RATE),
+        optimizer: 'adam',
         loss: 'binaryCrossentropy',
         metrics: ['accuracy'],
     });
 
     ui.updateStatus("Training started....")
+
+    const surface = { name: 'show.fitCallbacks', tab: 'Training' };
+
     await model.fit(tensors.Xtrain_tf, tensors.ytrain_tf,{
         batchSize: BATCH_SIZE,
         epochs: EPOCHS,
         // validationSplit: 0.2,
-        // callbacks:{
-        //     onEpochEnd: async(curr_epoch, logs)=>{
-        //         await ui.updateTrainingStatus(curr_epoch, EPOCHS)
-        //         trainingLogs.push(logs);
-        //         //plot the training chart
-        //         tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss', 'acc'])                
-        //     },
-        // }
+        callbacks:{
+            onEpochEnd: async(curr_epoch, logs)=>{
+                await ui.updateTrainingStatus(curr_epoch, EPOCHS)
+                trainingLogs.push(logs);
+                //plot the training chart
+                tfvis.show.history(chartbox, trainingLogs, ['loss', 'val_loss', 'acc']);         
+            },
+        }
     });
     // }).then(info => {
     //     console.log("Accuracy dot then: ", info.history.acc);
@@ -221,7 +242,8 @@ export async function train(model){
     const train_loss = trainingLogs[trainingLogs.length - 1].loss;
     const val_loss = trainingLogs[trainingLogs.length - 1].val_loss;
 
-    await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
+    console.log("test loss: ", test_loss);
+   // await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 
     // Predict 3 random samples.
     const prediction = model.predict(tf.randomNormal([1, 8]));
