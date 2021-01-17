@@ -1,13 +1,13 @@
-//arduino reqs
-const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline');
-const port = new SerialPort('/dev/tty.usbmodem14201', { baudRate: 9600 });
-const parser = port.pipe(new Readline({ delimiter: '\n' }));
+// //arduino reqs
+// const SerialPort = require('serialport');
+// const Readline = require('@serialport/parser-readline');
+// const port = new SerialPort('/dev/tty.usbmodem14201', { baudRate: 9600 });
+// const parser = port.pipe(new Readline({ delimiter: '\n' }));
 
-// Read the port data
-port.on("open", () => {
-  console.log('serial port open');
-});
-parser.on('data', data =>{
-  console.log('got word from arduino:', data);
-});
+// // Read the port data
+// port.on("open", () => {
+//   console.log('serial port open');
+// });
+// parser.on('data', data =>{
+//   console.log('got word from arduino:', data);
+// });

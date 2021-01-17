@@ -17,6 +17,10 @@ const BATCH_SIZE = 50
  * Convert Array of Arrays to Tensors, and normalize the features
  */
 export function arrayToTensor() {
+    console.log(tf.tensor2d(forestdata.Xtrain).shape);
+    console.log(tf.tensor2d(forestdata.ytrain).shape);
+    console.log(tf.tensor2d(forestdata.Xtest).shape);
+    console.log(tf.tensor2d(forestdata.ytest).shape);
     tensors['Xtrain_tf'] = normalizeData(tf.tensor2d(forestdata.Xtrain))
     tensors['Xtest_tf'] = normalizeData(tf.tensor2d(forestdata.Xtest))
     tensors['ytrain_tf'] = normalizeData(tf.tensor2d(forestdata.ytrain))
@@ -28,21 +32,12 @@ export function CreateNeuralNetwork(){
     const model = tf.sequential();
     model.add(tf.layers.dense({
         inputShape: [forestdata.dataShape],
-        units: 100,
-        activation: "softmax",
-        kernelInitializer: 'leCunUniform',
+        units: 1,
+        activation: 'linear'
     }));
-    model.add(tf.layers.dense({
-        units: 80, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-        model.add(tf.layers.dense({
-            units: 60, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-            model.add(tf.layers.dense({
-                units: 40, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-                model.add(tf.layers.dense({
-                    units: 20, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-    model.add(tf.layers.dense({
-        units: 10, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-    model.add(tf.layers.dense({units: 1}));
+    // model.add(tf.layers.dense({
+    //     units: 10, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
+    // model.add(tf.layers.dense({units: 1}));
 
     model.summary();
     return model;
@@ -96,7 +91,7 @@ export async function train(model){
     await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 
     // Predict 3 random samples.
-    const prediction = model.predict(tf.randomNormal([3, 784]));
+    const prediction = model.predict(tf.randomNormal([1, 12]));
     prediction.print();
 };
 

@@ -1,9 +1,9 @@
 const PAPA = require('papaparse');
-const BASE_PATH = "https://raw.githubusercontent.com/risenW/tfjs-data/master/forestfire/";
-const TRAIN_DATA = "forestfire_train.csv";
-const TEST_DATA = "forestfire_test.csv";
-const TRAIN_TARGET = "forestfire_train_target.csv";
-const TEST_TARGET = "forestfire_test_target.csv";
+const BASE_PATH = "https://raw.githubusercontent.com/Mi1ind/Inferno-Oracle-1/master/data/";
+const TRAIN_DATA = "forestfires-train.csv";
+const TEST_DATA = "forestfires-test.csv";
+const TRAIN_TARGET = "forestfires-train-target.csv";
+const TEST_TARGET = "forestfires-test-target.csv";
 export const FEATURE_NAMES = ['X','Y','month','day','temp','RH','wind','rain']
 const regeneratorRuntime = require("regenerator-runtime");
 
