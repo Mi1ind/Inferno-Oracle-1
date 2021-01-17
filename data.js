@@ -53,7 +53,7 @@ export const read_csv = async (csv_file) => {
      }
 
      get dataShape(){
-         return this.Xtrain[0].length - 4;
+         return this.Xtrain[0].length;
      }
 
      async loadAllData(){

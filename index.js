@@ -17,10 +17,6 @@ const BATCH_SIZE = 50
  * Convert Array of Arrays to Tensors, and normalize the features
  */
 export function arrayToTensor() {
-    console.log(tf.tensor2d(forestdata.Xtrain).shape);
-    console.log(tf.tensor2d(forestdata.ytrain).shape);
-    console.log(tf.tensor2d(forestdata.Xtest).shape);
-    console.log(tf.tensor2d(forestdata.ytest).shape);
     tensors['Xtrain_tf'] = normalizeData(tf.tensor2d(forestdata.Xtrain))
     tensors['Xtest_tf'] = normalizeData(tf.tensor2d(forestdata.Xtest))
     tensors['ytrain_tf'] = normalizeData(tf.tensor2d(forestdata.ytrain))
@@ -30,14 +26,17 @@ export function arrayToTensor() {
 
 export function CreateNeuralNetwork(){
     const model = tf.sequential();
+    console.log("Data Shape", forestdata.dataShape);
     model.add(tf.layers.dense({
         inputShape: [forestdata.dataShape],
         units: 1,
-        activation: 'linear'
+        // activation: 'relu'
+        // kernelInitializer: "leCunNormal"
     }));
     // model.add(tf.layers.dense({
     //     units: 10, activation: 'softmax', kernelInitializer: 'leCunUniform'}));
-    // model.add(tf.layers.dense({units: 1}));
+    // model.add(tf.layers.dense({units: 20, activation: 'softmax'}));
+    // model.add(tf.layers.dense({units: 1, activation: 'linear'}));
 
     model.summary();
     return model;
@@ -57,8 +56,8 @@ export async function train(model){
 
     model.compile({
         optimizer: tf.train.adam(LEARNING_RATE),
-        loss: 'binaryCrossentropy',
-        metrics: ['accuracy', 'mse'],
+        loss: 'meanSquaredError',
+        metrics: ['accuracy'],
     });
 
     ui.updateStatus("Training started....")
@@ -80,7 +79,7 @@ export async function train(model){
 
     ui.updateStatus("Evaluating model on test data")
     const result = model.evaluate(tensors.Xtest_tf, tensors.ytest_tf);
-
+    console.log("Result", result[0].dataSync()[0]);
     console.log("Accuracy: ", result[1].dataSync()[0] * 100, "%");
     const m_accuracy = result[1].dataSync()[0] * 100;
 
@@ -91,7 +90,7 @@ export async function train(model){
     await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 
     // Predict 3 random samples.
-    const prediction = model.predict(tf.randomNormal([1, 12]));
+    const prediction = model.predict(tf.randomNormal([1, 8]));
     prediction.print();
 };
 
