@@ -51,8 +51,8 @@
             var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/dark-v10',
-            center: [-118.658,53.983],
-            zoom: 5
+            center: [-100,50],
+            zoom: 3
             });
                 
             map.on('load', function () {
@@ -60,7 +60,7 @@
             // Heatmap layers also work with a vector tile source.
             map.addSource('MODIS_CAN_Fires', {
             'type': 'geojson',
-            'data': 'MODIS_CAN_Fires.geojson'
+            'data': 'https://raw.githubusercontent.com/Mi1ind/Inferno-Oracle-1/master/MODIS_CAN_Fires.geojson'
             });
                 
             map.addLayer(
