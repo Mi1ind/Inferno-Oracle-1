@@ -243,7 +243,7 @@ export async function train(model){
     const val_loss = trainingLogs[trainingLogs.length - 1].val_loss;
 
     console.log("test loss: ", test_loss);
-   // await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
+    await ui.updateTrainingStatus(train_loss, val_loss, test_loss, m_accuracy)
 
     // Predict 3 random samples.
     const prediction = model.predict(tf.randomNormal([1, 8]));
