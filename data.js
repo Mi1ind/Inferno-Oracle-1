@@ -8,9 +8,6 @@ export const FEATURE_NAMES = ['X','Y','month','day','temp','RH','wind','rain']
 const regeneratorRuntime = require("regenerator-runtime");
 
 
-/**
- * Parse the CSV Object into an array of array of numbers
- */
 const convert_to_array = async (csv_file) => {
     return new Promise(resolve=>{
         let data = csv_file.map((row)=>{
@@ -21,9 +18,7 @@ const convert_to_array = async (csv_file) => {
 }
 
 
-/**
- * Reads the dataset from the specified path
- */
+
 export const read_csv = async (csv_file) => {
     return new Promise(resolve => {
         const file_path = `${BASE_PATH}${csv_file}`;
@@ -40,10 +35,6 @@ export const read_csv = async (csv_file) => {
 }
 
 
-
-/**
- * Helper class for loading train and test data
- */
  export class ForestDataset {
      constructor(){
          this.Xtrain = null;
