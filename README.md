@@ -11,15 +11,15 @@ So what was our approach? Well, we decided to go down the IoT route by using an 
 ## How we built it
 
 There are 3 aspects to our project:
-The Neural Network: We used data sets collected for a research paper to train our machine learning model. We used Tensorflow.js to train the model which would then be used in tandem with our hardware unit to predict the likelihood of a forest fire occuring.
-The Hardware: We connected an UNO R3 with a DHT11 sensor which collected temperature and humidity values from the surroundings. This was shown on an LCD display also connected to the UNO R3 unit. The data was processed by python and was exported to a csv file which would then be read by the Machine Learning model to predict an outcome.
-The Data Visualization: The loss, validation loss, and accuracy were processed and then displayed using TFVIS and are a visual representation of the effectiveness of the model. The data points were also converted from a CSV file to a geojson file which was then used to display all the recent North American forest fires.
+1. The Neural Network: We used data sets collected for a research paper to train our machine learning model. We used Tensorflow.js to train the model which would then be used in tandem with our hardware unit to predict the likelihood of a forest fire occuring.
+2. The Hardware: We connected an UNO R3 with a DHT11 sensor which collected temperature and humidity values from the surroundings. This was shown on an LCD display also connected to the UNO R3 unit. The data was processed by python and was exported to a csv file which would then be read by the Machine Learning model to predict an outcome.
+3. The Data Visualization: The loss, validation loss, and accuracy were processed and then displayed using TFVIS and are a visual representation of the effectiveness of the model. The data points were also converted from a CSV file to a geojson file which was then used to display all the recent North American forest fires.
 
 ## Challenges we ran into
 
 This was our first time learning about and using machine learning. It was also our first time connecting hardware with machine learning, and visualizing data of our ML model.
 
-Time management was a huge obstacle. We had planned to be a team of 4 people, but last minute changes resulted in our teammates opting out leaving just the two of us to complete all these tasks. Since we did not have a team to allocate tasks to, it fell upon the both of us to support each other and take on every single role from the front-end to the back-end, to the hardware. It was a complete team effort and without our continuous communication and time management we would not have completed our hack in time.
+Time management was a huge obstacle. We had planned to be a team of 4 people, but last minute changes resulted in our team composition consisting just the two of us. Since we did not have a team to allocate tasks to, it fell upon the both of us to support each other and take on every single role from the front-end to the back-end, to the hardware. It was a complete team effort and without our continuous communication and time management we would not have completed our hack in time.
 
 ## Accomplishments that we’re proud of and what we learned
 
