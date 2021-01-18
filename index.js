@@ -1,10 +1,10 @@
-import * as tf from '/node_modules/@tensorflow/tfjs';
-import * as tfvis from '/node_modules/@tensorflow/tfjs-vis';
+import * as tf from '@tensorflow/tfjs';
+import * as tfvis from '@tensorflow/tfjs-vis';
 import { ForestDataset, FEATURE_NAMES } from './data';
 import { normalizeData } from './utils'
 import * as ui from './ui';
 import regeneratorRuntime from "regenerator-runtime";
-import { outerProduct, tensor } from '/node_modules/@tensorflow/tfjs';
+import { outerProduct, tensor } from '@tensorflow/tfjs';
 
 
 const forestdata = new ForestDataset();
