@@ -3,7 +3,5 @@
 .vscode/
 data/.DS_Store
 dist/
-/node_modules/*
-!/node_modules/@tensorflow/
-!/node_modules/papaparse/
+node_modules/
 yarn.lock
